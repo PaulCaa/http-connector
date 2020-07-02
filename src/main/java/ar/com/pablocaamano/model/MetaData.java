@@ -1,10 +1,14 @@
 package ar.com.pablocaamano.model;
 
 import ar.com.pablocaamano.commons.rest.Error;
-
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Caamaño, Pablo
+ * @since 02/07/2020
+ * @link pablocaamano.com.ar
+ */
 public class MetaData {
     private int httpStatus;
     private String message;
