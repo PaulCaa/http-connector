@@ -5,6 +5,7 @@ import ar.com.pablocaamano.commons.rest.Error;
 import ar.com.pablocaamano.model.HttpResponse;
 import ar.com.pablocaamano.util.RequestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -18,6 +19,8 @@ import java.util.Map;
  * @link pablocaamano.com.ar
  */
 public class ServiceConnector {
+
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     private final RequestUtils utils;
     private int statusCode = 0;
@@ -39,6 +42,7 @@ public class ServiceConnector {
     public HttpResponse getRequest(String url, Map<String,String> params, Map<String,String> headers){
         if(url == null || url.equals(""))
             throw new EmptyParameterException("URL parameter is missing");
+        url += utils.mapParams(params);
         return execute(url, headers);
     }
 
@@ -49,15 +53,19 @@ public class ServiceConnector {
             httpConnection.connect();
             BufferedInputStream bs;
             statusCode = httpConnection.getResponseCode();
-            message = httpConnection.getResponseMessage();
-            if (statusCode != 200)
+            if (statusCode != 200) {
+                message = "ERROR";
+                error = new Error();
+                error.setMessage(httpConnection.getResponseMessage());
                 bs = new BufferedInputStream(httpConnection.getErrorStream());
-            else
+            }else {
+                message = "OK";
                 bs = new BufferedInputStream(httpConnection.getInputStream());
+            }
             body = processInput(bs, httpConnection.getContentLength());
         }catch(Exception exception){
             statusCode = 500;
-            message = "Error";
+            message = "ERROR";
             error = new Error();
             error.setMessage("Internal error");
             error.setDescription("Error to process request connection");
@@ -68,7 +76,6 @@ public class ServiceConnector {
 
     /* Method to process BufferedInputStream and return a generic object response */
     private Object processInput(BufferedInputStream bs, int contentLength) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         byte[] buff = new byte[8192];
         int len = 0;
@@ -83,7 +90,7 @@ public class ServiceConnector {
             if(readLen >= contentLength)
                 break;
         }
-        return  mapper.readValue(buffer.toByteArray(), Object.class);
+        return mapper.readValue(buffer.toByteArray(), Object.class);
     }
 
     /* Making response and set all atributtes */

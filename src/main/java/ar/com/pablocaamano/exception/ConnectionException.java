@@ -3,10 +3,10 @@ package ar.com.pablocaamano.exception;
 import ar.com.pablocaamano.commons.exception.CommonException;
 
 /**
- * This exception is throwed when any process of http connection fail
- * @Author Caamaño, Pablo
- * @Since 02/07/2020
- * @Website pablocaamano.com.ar
+ * This exception is threw when any process of http connection fail
+ * @author Caamaño, Pablo
+ * @since 02/07/2020
+ * @link pablocaamano.com.ar
  */
 public class ConnectionException extends CommonException {
 
