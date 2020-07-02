@@ -42,4 +42,17 @@ public class HttpConnector {
         ServiceConnector service = new ServiceConnector();
         return service.getRequest(url, params, headers);
     }
+
+    /**
+     * POST request with URL, path params, header params and requestBody
+     * @param url
+     * @param params
+     * @param headers
+     * @param requestBody
+     * @return HttpResponse
+     */
+    public static HttpResponse postRequest(String url, Map<String,String> params, Map<String,String> headers, Object requestBody){
+        ServiceConnector service = new ServiceConnector();
+        return service.postRequest(url, params, headers, requestBody);
+    }
 }

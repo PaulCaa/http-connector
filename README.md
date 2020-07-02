@@ -1,5 +1,5 @@
 # http-connector
-Java library to call REST APIs by http protocol
+Java library to call REST APIs by http protocol.
 
 ## How to import
 
@@ -18,7 +18,7 @@ Java library to call REST APIs by http protocol
     <dependency>
         <groupId>ar.com.pablocaamano</groupId>
         <artifactId>http-connector</artifactId>
-        <version>0.3-SNAPSHOT</version>
+        <version>0.4-SNAPSHOT</version>
     </dependency>
 ```
 
@@ -26,11 +26,11 @@ Java library to call REST APIs by http protocol
 
 **Importing to Maven  from jar**
 
-1. Download `http-connector-0.3-SNAPSHOT.jar`
+1. Download `http-connector-0.4-SNAPSHOT.jar`
 2. Located in folder where are jar file execute the command:
 
 ```bash
-    $ mvn install:install-file -Dfile=http-connector-0.3-SNAPSHOT.jar -DgroupId=ar.com.pablocaamano -DartifactId=http-connector -Dversion=0.3-SNAPSHOT -Dpackaging=jar
+    $ mvn install:install-file -Dfile=http-connector-0.4-SNAPSHOT.jar -DgroupId=ar.com.pablocaamano -DartifactId=http-connector -Dversion=0.4-SNAPSHOT -Dpackaging=jar
 ```
 
 3. Add dependency in `pom.xml` of your project:
@@ -39,7 +39,7 @@ Java library to call REST APIs by http protocol
     <dependency>
         <groupId>ar.com.pablocaamano</groupId>
         <artifactId>http-connector</artifactId>
-        <version>0.3-SNAPSHOT</version>
+        <version>0.4-SNAPSHOT</version>
     </dependency>
 ```
 

@@ -4,14 +4,15 @@ import ar.com.pablocaamano.commons.exception.EmptyParameterException;
 import ar.com.pablocaamano.commons.rest.Error;
 import ar.com.pablocaamano.model.HttpResponse;
 import ar.com.pablocaamano.util.RequestUtils;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * @author Caamaño, Pablo
@@ -73,6 +74,53 @@ public class ServiceConnector {
         }
         return makeResponse();
     }
+
+    /**
+     * POST request invocation
+     * @param url
+     * @param params
+     * @param headers
+     * @param requestBody
+     * @return
+     */
+    public HttpResponse postRequest(String url, Map<String,String> params, Map<String,String> headers, Object requestBody){
+        if(url == null || url.equals(""))
+            throw new EmptyParameterException("URL parameter is missing");
+        url += utils.mapParams(params);
+        return execute(url, headers, requestBody);
+    }
+
+    private HttpResponse execute(String url, Map<String,String> headers, Object requestBody){
+        try{
+            HttpURLConnection httpConnection = utils.generateHttpConnection("POST",url,headers);
+            httpConnection.connect();
+            mapper.setTimeZone(TimeZone.getDefault());
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String strReq = mapper.writeValueAsString(requestBody);
+            httpConnection.getOutputStream().write(strReq.getBytes(StandardCharsets.UTF_8));
+            BufferedInputStream bs;
+            statusCode = httpConnection.getResponseCode();
+            if (statusCode != 200) {
+                message = "ERROR";
+                error = new Error();
+                error.setMessage(httpConnection.getResponseMessage());
+                bs = new BufferedInputStream(httpConnection.getErrorStream());
+            }else {
+                message = "OK";
+                bs = new BufferedInputStream(httpConnection.getInputStream());
+            }
+            body = processInput(bs, httpConnection.getContentLength());
+        }catch (Exception exception){
+            statusCode = 500;
+            message = "ERROR";
+            error = new Error();
+            error.setMessage("Internal error");
+            error.setDescription("Error to process request connection");
+            error.setCause(exception);
+        }
+        return makeResponse();
+    }
+
 
     /* Method to process BufferedInputStream and return a generic object response */
     private Object processInput(BufferedInputStream bs, int contentLength) throws IOException {
