@@ -6,7 +6,7 @@
 
     <groupId>ar.com.pablocaamano</groupId>
     <artifactId>http-connector</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>HttpConnector</name>
     <description>Artifact to call APIs or Services with http protocol</description>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>ar.com.pablocaamano</groupId>
             <artifactId>commons-library</artifactId>
-            <version>1.0</version>
+            <version>1.5.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
